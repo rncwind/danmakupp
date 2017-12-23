@@ -49,7 +49,8 @@ void handleInput(Player& ship)
 
 void handleCollision(Player& ship, Player& testEnemy)
 {
-    if(ship.getBounds().intersects(testEnemy.getBounds()))
+    if(ship.getBounds().intersects(testEnemy.getBounds())){
         std::cout << "\n\nCOLLISION\n\n";
+    }
 }
 
