@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "player.h"
-
+#include "enemy.h"
 void handleInput(Player& ship);
 void handleCollision(Player& ship, Player& testEnemy);
 
