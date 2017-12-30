@@ -1,4 +1,4 @@
-SOURCE=*.cpp
+SOURCE=./Source/*.cpp
 LIBS=-lsfml-window -lsfml-system -lsfml-graphics
 NAME=danmaku.out
 DFLAGS=-Wall -Wpedantic -fsanitize=address -fsanitize=undefined
