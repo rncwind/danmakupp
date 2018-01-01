@@ -6,6 +6,10 @@ class Enemy : public sf::Drawable, public sf::Transformable
 public:
     Enemy(sf::Texture texture) : enemy_Texture(texture)
     { enemy_Sprite.setTexture(enemy_Texture); };
+
+    sf::FloatRect getBounds(){
+        return enemy_Sprite.getGlobalBounds();
+    }
 private:
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const{
         states.texture = &enemy_Texture;

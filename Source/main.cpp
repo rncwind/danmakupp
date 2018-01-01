@@ -1,64 +1,54 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
 #include "player.h"
 #include "enemy.h"
 
-std::map<std::string,sf::Texture> textureMap;
+void eventHandler(Player& ship, std::vector<Enemy> enemyContainer);
+void debugFuncs(std::vector<Enemy>& enemyContainer);
 
-void handleInput(Player& ship);
-void handleCollision(Player& ship, Player& testEnemy);
+std::map<std::string,sf::Texture> textureMap;
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(600,800),"Danmaku");
     window.setVerticalSyncEnabled(true);
-    
+
     sf::Texture playertex;
+    sf::Texture enemytex;
     if(!playertex.loadFromFile("Resources/ikaruga.png"))
         std::cerr << "failed to load player sprite!\n";
-    Player ship(playertex);
-    Player testEnemy(playertex);
-    testEnemy.setPosition(300,400);
-    testEnemy.updateSprite();
+    if(!enemytex.loadFromFile("Resources/caco.png"))
+        std::cerr << "Failed to load enemy sprite!\n";
+
+    textureMap.emplace("player", playertex);
+    textureMap.emplace("enemy",  enemytex);
+
+    Player ship(textureMap.at("player"));
+
+    std::vector<Enemy> enemyContainer;
     while (window.isOpen())
     {
-        handleInput(ship);
-        handleCollision(ship,testEnemy);
+        eventHandler(ship,enemyContainer);
         sf::Event event;
         while(window.pollEvent(event)){
             if(event.type == sf::Event::Closed){
                 window.close();
             }
         }
+        debugFuncs(enemyContainer);
         window.clear(sf::Color::Black);
         window.draw(ship);
-        window.draw(testEnemy);
+        for(auto& e : enemyContainer)
+            window.draw(e);
         window.display();
     }
 }
 
-void eventHander(Player& ship, std::vector<Enemy> enemyContainer)
+void debugFuncs(std::vector<Enemy>& enemyContainer)
 {
-
-}
-
-void handleInput(Player& ship)
-{
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        ship.movedown();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        ship.moveUp();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        ship.moveRight();
-    if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        ship.moveLeft();
-}
-
-void handleCollision(Player& ship, Player& testEnemy)
-{
-    if(ship.getBounds().intersects(testEnemy.getBounds())){
-        std::cout << "\n\nCOLLISION\n\n";
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S) && enemyContainer.size() < 1){
+        enemyContainer.emplace_back(textureMap.at("enemy"));
     }
 }
-
